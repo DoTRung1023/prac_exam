@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <utility>
+#include <vector>
 #include "Helper.hpp"
 #include "GridItem.hpp"
 #include "Goal.hpp"

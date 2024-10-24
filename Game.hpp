@@ -66,6 +66,10 @@ public:
         return false;;
     }
     void movePlayer(int dx, int dy){
+        if(gameState != PLAYING){
+            displayState();
+            return;
+        }
         Robot* robot = static_cast<Robot*>(robot);
         if(gameState == PLAYING){
             if(robot->move(dx, dy)){

@@ -26,11 +26,11 @@ public:
         }
     }
     bool move(int xOffset, int yOffset){
-        if(xOffset == 0 && y < height-1){
+        if(xOffset == 0 && y + yOffset < height && y + yOffset >= 0){
             this->y += yOffset;
             return true;
         }
-        else if(yOffset == 0 && x < width-1){
+        else if(yOffset == 0 && x + xOffset < width && x + xOffset >= 0){
             this->x += xOffset;
             return true;
         }

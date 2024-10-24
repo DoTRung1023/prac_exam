@@ -66,10 +66,6 @@ public:
         return false;;
     }
     void movePlayer(int dx, int dy){
-        if(gameState != PLAYING){
-            displayState();
-            return;
-        }
         Robot* robot = static_cast<Robot*>(robot);
         if(gameState == PLAYING){
             if(robot->move(dx, dy)){
@@ -124,6 +120,18 @@ public:
             cout << "\n";
         }
     }
+    ~Game(){
+        if(goal != nullptr){
+            delete goal;
+        }
+        if(robot != nullptr)
+        delete robot;
+        for(auto& obs:obstacles){
+            if(obs != nullptr)
+            delete obs;
+        }
+    }
+
 };
 
 

@@ -67,25 +67,26 @@ public:
     void movePlayer(int dx, int dy){
         Robot* robot = static_cast<Robot*>(robot);
         if(gameState == PLAYING){
-            robot->move(dx, dy);
-        }
-        for(GridItem* obs:obstacles){
-            if(static_cast<Obstacle*>(obs)->interact(robot) && robot->getHealth() > 0){
-                if(robot->getHealth() == 0){
-                    gameState = LOSE;
+            if(robot->move(dx, dy)){
+                for(GridItem* obs:obstacles){
+                    if(static_cast<Obstacle*>(obs)->interact(robot) && robot->getHealth() > 0){
+                        if(robot->getHealth() == 0){
+                            gameState = LOSE;
+                            displayState();
+                            return;
+                        }
+                    }  
+                }
+                if(static_cast<Goal*>(goal)->interact(robot) && robot->getHealth() > 0){
+                    gameState = WIN;
                     displayState();
                     return;
                 }
-            }  
+                gameState = PLAYING;
+                displayState();
+                return;
+            }
         }
-        if(static_cast<Goal*>(goal)->interact(robot) && robot->getHealth() > 0){
-            gameState = WIN;
-            displayState();
-            return;
-        }
-        gameState = PLAYING;
-        displayState();
-        return;
     }
     void printGrid(){
         pair<int, int> pos_robot = robot->getCoordinates();
@@ -94,23 +95,24 @@ public:
             for(int j = 0; j<height; j++){
                 if(pos_robot.first == i && pos_robot.second == j){
                     cout << 'P';
-                    break;
                 }
-                int obs = 0;
-                for(GridItem* obs:obstacles){
-                    pair<int, int> pos_obs = obs->getCoordinates();
-                    if(pos_obs.first == i && pos_obs.second == j){
-                        cout << 'O';
-                        obs++;
-                        break;
+                else{
+                    int obs = 0;
+                    for(GridItem* obs:obstacles){
+                        pair<int, int> pos_obs = obs->getCoordinates();
+                        if(pos_obs.first == i && pos_obs.second == j){
+                            cout << 'O';
+                            obs++;
+                            break;
+                        }
                     }
-                }
-                if(obs == 0){
-                    if(pos_goal.first == i && pos_goal.second == j){
-                        cout << 'G';
-                    }
-                    else{
-                        cout << '_';
+                    if(obs == 0){
+                        if(pos_goal.first == i && pos_goal.second == j){
+                            cout << 'G';
+                        }
+                        else{
+                            cout << '_';
+                        }
                     }
                 }
             }
